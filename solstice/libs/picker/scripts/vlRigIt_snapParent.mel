@@ -4,8 +4,8 @@ global proc vlRigIt_snapParent(string $object, int $parent, int $oldParent)
 	string $oldSel[] = `ls -sl -l`;
 		
 	string $temp =  `createNode transform`;
-	string $tempCns[] = `parentConstraint $object $temp`;
-	delete $tempCns;
+	string $tempCns1[] = `parentConstraint $object $temp`;
+	delete $tempCns1;
 	setAttr ($object + ".parent") $parent;
 	
 	string $posAttrL[] = {"translateX","translateY", "translateZ"};
@@ -26,11 +26,11 @@ global proc vlRigIt_snapParent(string $object, int $parent, int $oldParent)
 	}
 	
 	$cmd += ($skipCmd + $temp + " " + $object);
-	string $tempCns[] = `eval $cmd`;
+	string $tempCns2[] = `eval $cmd`;
 		
 	float $pos[] = `getAttr ($object + ".translate")`;
 	float $rot[] = `getAttr ($object + ".rotate")`;	
-	delete $tempCns $temp;
+	delete $tempCns2 $temp;
 	
 	if (!$posLocked){ setAttr ($object + ".translate") $pos[0] $pos[1] $pos[2]; }
 	if (!$rotLocked){ setAttr ($object + ".rotate") $rot[0] $rot[1] $rot[2]; }

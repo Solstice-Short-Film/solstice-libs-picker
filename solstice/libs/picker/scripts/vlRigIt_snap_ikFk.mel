@@ -100,8 +100,8 @@ global proc vlRigIt_snap_ikFk( string $switcher, int $goToMode)
             //le prossime tre righe sono per il piede, che non ha il pivot alla caviglia
             //(ovvero nel $endPosition_fk_jnt)
             string $ikCtrl_tempParent = `createNode "transform"`;
-            string $tempCns[] = `parentConstraint $ikCTRLs[0] $ikCtrl_tempParent`;delete $tempCns;
-            string $tempCns[] = `pointConstraint ($ik_jntL[2]) $ikCtrl_tempParent`;delete $tempCns;
+            string $tempCnsa[] = `parentConstraint $ikCTRLs[0] $ikCtrl_tempParent`;delete $tempCnsa;
+            string $tempCnsb[] = `pointConstraint ($ik_jntL[2]) $ikCtrl_tempParent`;delete $tempCnsb;
             string $ikCtrl_tempConstraint[] = `parentConstraint -mo $ikCtrl_tempParent $ikCTRLs[0]`;
             //creo i gruppi per calcolare la posizione del poleVector
             //controllare l'angolo tra i joints fk nel caso in cui sia 0, ovvero se sono tesi il braccio/gamba
@@ -109,7 +109,7 @@ global proc vlRigIt_snap_ikFk( string $switcher, int $goToMode)
             for ($i=0;$i<3;$i++){
                 string $L[] = `spaceLocator`;
                 $pvCalc_locsL[$i] = $L[0];
-                string $tempCns[] = `pointConstraint $fkCTRLs[$i] $pvCalc_locsL[$i]`; delete $tempCns;
+                string $tempCnsc[] = `pointConstraint $fkCTRLs[$i] $pvCalc_locsL[$i]`; delete $tempCnsc;
             }
 
             //creo il triangolo poly per il calcolo della normale etc
@@ -130,10 +130,10 @@ global proc vlRigIt_snap_ikFk( string $switcher, int $goToMode)
             float $pvDist = `mag ($point0 - $point1)`;
 
             //calcolo l'angolo
-            string $angleCalcLocsAL[] = `spaceLocator`; string $tempCns[] = `pointConstraint $fkCTRLs[0] $angleCalcLocsAL[0]`; delete $tempCns;
-            string $angleCalcLocsBL[] = `spaceLocator`; string $tempCns[] = `pointConstraint $fkCTRLs[0] $angleCalcLocsBL[0]`; delete $tempCns;
-            string $tempCns[] = `aimConstraint -worldUpVector $normX $normY $normZ $fkCTRLs[1] $angleCalcLocsAL`; delete $tempCns;
-            string $tempCns[] = `aimConstraint -worldUpVector $normX $normY $normZ $fkCTRLs[2] $angleCalcLocsBL`; delete $tempCns;
+            string $angleCalcLocsAL[] = `spaceLocator`; string $tempCnsd[] = `pointConstraint $fkCTRLs[0] $angleCalcLocsAL[0]`; delete $tempCnsd;
+            string $angleCalcLocsBL[] = `spaceLocator`; string $tempCnse[] = `pointConstraint $fkCTRLs[0] $angleCalcLocsBL[0]`; delete $tempCnse;
+            string $tempCnsf[] = `aimConstraint -worldUpVector $normX $normY $normZ $fkCTRLs[1] $angleCalcLocsAL`; delete $tempCnsf;
+            string $tempCnsg[] = `aimConstraint -worldUpVector $normX $normY $normZ $fkCTRLs[2] $angleCalcLocsBL`; delete $tempCnsg;
             string $vectProd1 = `createNode "vectorProduct"`; setAttr ($vectProd1 + ".operation") 3; setAttr ($vectProd1 + ".input1X") 1;
             string $vectProd2 = `createNode "vectorProduct"`; setAttr ($vectProd2 + ".operation") 3; setAttr ($vectProd2 + ".input1X") 1;
             connectAttr ($angleCalcLocsAL[0] + ".matrix") ($vectProd1 + ".matrix");
@@ -149,10 +149,10 @@ global proc vlRigIt_snap_ikFk( string $switcher, int $goToMode)
             setAttr ($closestLocL[0] + ".translate") $c 0 ($dist + $pvDist);
 
             //snappo il poleVector
-            string $tempCns[] = `pointConstraint $closestLocL[0] $ikCTRLs[1]`;
-            float $pos[] = `getAttr ($ikCTRLs[1] + ".translate")`;
-            delete $tempCns;
-            setAttr ($ikCTRLs[1] + ".translate") $pos[0] $pos[1] $pos[2];
+            string $tempCnsh[] = `pointConstraint $closestLocL[0] $ikCTRLs[1]`;
+            float $pos1[] = `getAttr ($ikCTRLs[1] + ".translate")`;
+            delete $tempCnsh;
+            setAttr ($ikCTRLs[1] + ".translate") $pos1[0] $pos1[1] $pos1[2];
             //snappo il controllo ik
             float $mirrorOffset[] = {0.0, 0.0, 0.0};
             if ($side == "R"){
@@ -164,11 +164,11 @@ global proc vlRigIt_snap_ikFk( string $switcher, int $goToMode)
                     $mirrorOffset = {0.0, 180.0, -90.0} ;
                 }
             }
-            string $tempCns[] = `pointConstraint $fkCTRLs[2] $ikCtrl_tempParent`;delete $tempCns;
-            string $tempCns[] = `orientConstraint
+            string $tempCnsi[] = `pointConstraint $fkCTRLs[2] $ikCtrl_tempParent`;delete $tempCnsi;
+            string $tempCnsj[] = `orientConstraint
                         -offset $mirrorOffset[0] $mirrorOffset[1] $mirrorOffset[2]
                         $fkCTRLs[2] $ikCtrl_tempParent`;
-            delete $tempCns;
+            delete $tempCnsj;
 
 
             //via le utilities
