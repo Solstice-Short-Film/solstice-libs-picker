@@ -1,0 +1,10 @@
+solstice.libs.picker.scripts package
+====================================
+
+Module contents
+---------------
+
+.. automodule:: solstice.libs.picker.scripts
+   :members:
+   :undoc-members:
+   :show-inheritance:

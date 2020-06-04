@@ -1,0 +1,18 @@
+solstice.libs.picker package
+============================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   solstice.libs.picker.scripts
+
+Module contents
+---------------
+
+.. automodule:: solstice.libs.picker
+   :members:
+   :undoc-members:
+   :show-inheritance:
